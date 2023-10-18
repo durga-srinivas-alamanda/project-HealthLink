@@ -1,0 +1,49 @@
+.profile-display{
+   
+    width:50vw;
+    height:95vh;
+    margin: 5% 25%;
+    padding: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5%;
+    box-shadow: 12px 12px 40px 12px rgb(79, 110, 248);
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   color: white;
+   font-weight: bold;
+   font-size: 15px;
+}
+.heading{
+    color: rgb(11, 43, 253);
+    text-align: center;
+}
+input{
+    border-radius:5PX 5PX 5PX 5PX ;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url(gradient2.jpg);
+    background-repeat: no-repeat;
+    background-size: 500vh;
+}
+
+
+
+.profile-content {
+    display: inline-block;
+    text-align: left;
+}
+
+.profile-content label {
+    display: block;
+    margin: 10px 0;
+}
+.profile-content input{
+    align-items: right;
+}

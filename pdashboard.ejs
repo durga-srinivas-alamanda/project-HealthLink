@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width">
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+    <title>person Details</title>
+
+    <style>
+        /* Styling for the header and login section */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Styling for the profile icon */
+        .profile-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+
+        /* Styling for the patient profile */
+        .patient-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Styling for the main content container */
+        .content {
+            text-align: center;
+            margin: 100px 0;
+        }
+
+        /* Styling for the form container */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        /* Styling for the heading */
+        .form-heading {
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Styling for the search input and button container */
+        .input-container {
+            display: flex;
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 300px;
+        }
+
+        .search-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Styling for the container with inner containers */
+        .inner-container {
+            display: flex;
+            flex-direction: row; /* Set to row to align inner boxes side by side */
+            justify-content: space-between; /* Spread inner boxes evenly */
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        /* Styling for the individual inner containers */
+        .inner-box {
+            flex: 1; /* Distribute space equally between inner boxes */
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            text-align: center;
+            height: 100px;
+            text-align: center;
+        }
+
+        /* Styling for the footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="patient-profile">
+            <div class="profile-icon"></div>
+            Patient Profile
+        </div>
+        <div id="user-status">
+            Logged In<p><%= user.pemail %></p>
+        </div>
+    </header>
+    
+    <div class="content">
+        <div class="form-container">
+            <h2 class="form-heading">Enter Location</h2>
+            <form method="post" action="/search">
+            <div class="input-container">
+                <input type="text" id="searchInput" name="searchInput" placeholder="Enter your search query">
+                <button type="submit" onclick="searchServer()" >Search</button>
+            </div>
+        </form>
+        </div>
+        
+        
+    <div class="inner-container" id="innerContainer">
+        <!-- Inner boxes will be updated dynamically -->
+    </div>
+    <div class="inner-container" id="innerContainer">
+        <p id="result">No doctors found for this location.</p>
+        <!-- Inner boxes will be updated dynamically -->
+    </div>
+    
+
+
+
+    <script>
+       function searchServer() {
+    event.preventDefault();
+    var searchInput = document.getElementById('searchInput').value;
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST', '/search', true);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+
+            const resultMessage = document.getElementById('result');
+
+            if (response.doctorDetails.length > 0) {
+                updateInnerBoxes(response.doctorDetails);
+                resultMessage.style.display = 'none'; // Hide the message
+            } else {
+                // Display a message when no doctors are found
+                resultMessage.style.display = 'block';
+                 // Show the message
+            }
+        }
+    };
+
+    xhr.send(JSON.stringify({ searchInput: searchInput }));
+}
+
+function updateInnerBoxes(doctorDetails) {
+    const innerContainer = document.getElementById('innerContainer');
+    innerContainer.innerHTML = ''; // Clear existing content
+
+    doctorDetails.forEach((doctor) => {
+        const innerBox = document.createElement('div');
+        innerBox.className = 'inner-box';
+        innerBox.innerHTML = `
+            <span>${doctor.dname}</span><br>
+            Specialization: ${doctor.dspecial}<br>
+            Experience: ${doctor.dexpert} years<br>
+            Age : ${doctor.dage} years old<br>
+            Phone No. :${doctor.dphoneno}<br>
+            Location : ${doctor.dlocation}<br> 
+        `;
+        innerContainer.appendChild(innerBox);
+    });
+}
+
+    </script>
+    
+
+
+
+
+
+
+    <footer>
+        <p>“The greatness of a doctor and patient relationship lies in the trust, compassion, and understanding that binds them together.”</p>
+    </footer>
+</body>
+</html>
